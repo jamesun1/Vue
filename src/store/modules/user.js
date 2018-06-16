@@ -1,36 +1,18 @@
-import { loginByUsername, logout, getUserInfo } from '@/api/login'
+import { login, logout, getInfo } from '@/api/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
+import { debug } from 'util';
 
 const user = {
   state: {
-    user: '',
-    status: '',
-    code: '',
     token: getToken(),
     name: '',
     avatar: '',
-    introduction: '',
-    roles: [],
-    setting: {
-      articlePlatform: []
-    }
+    roles: []
   },
 
   mutations: {
-    SET_CODE: (state, code) => {
-      state.code = code
-    },
     SET_TOKEN: (state, token) => {
       state.token = token
-    },
-    SET_INTRODUCTION: (state, introduction) => {
-      state.introduction = introduction
-    },
-    SET_SETTING: (state, setting) => {
-      state.setting = setting
-    },
-    SET_STATUS: (state, status) => {
-      state.status = status
     },
     SET_NAME: (state, name) => {
       state.name = name
@@ -44,14 +26,14 @@ const user = {
   },
 
   actions: {
-    // 用户名登录
-    LoginByUsername({ commit }, userInfo) {
-      const username = userInfo.username.trim()
+    // 登录
+    Login({ commit }, userInfo) {
+      const user = userInfo.username.trim()
       return new Promise((resolve, reject) => {
-        loginByUsername(username, userInfo.password).then(response => {
-          const data = response.data
-          commit('SET_TOKEN', data.token)
-          setToken(response.data.token)
+        login(user, userInfo.password).then(response => {
+          const data = response.message
+          setToken(data)
+          commit('SET_TOKEN', data)
           resolve()
         }).catch(error => {
           reject(error)
@@ -60,43 +42,29 @@ const user = {
     },
 
     // 获取用户信息
-    GetUserInfo({ commit, state }) {
+    GetInfo({ commit, state }) {
       return new Promise((resolve, reject) => {
-        getUserInfo(state.token).then(response => {
-          if (!response.data) { // 由于mockjs 不支持自定义状态码只能这样hack
-            reject('error')
-          }
+        getInfo(state.token).then(response => {
           const data = response.data
-
-          if (data.roles && data.roles.length > 0) { // 验证返回的roles是否是一个非空数组
-            commit('SET_ROLES', data.roles)
+          if (data.role) { // 验证返回的roles是否是一个非空数组
+            let dataFlag = [];
+            if(data.role === '0'){
+              dataFlag[0] = 'admin'
+            }else if(data.role === '1'){
+              dataFlag[0] = 'editor'
+            }
+            commit('SET_ROLES',dataFlag)
           } else {
             reject('getInfo: roles must be a non-null array !')
           }
-
-          commit('SET_NAME', data.name)
+          commit('SET_NAME', data.user)
           commit('SET_AVATAR', data.avatar)
-          commit('SET_INTRODUCTION', data.introduction)
           resolve(response)
         }).catch(error => {
           reject(error)
         })
       })
     },
-
-    // 第三方验证登录
-    // LoginByThirdparty({ commit, state }, code) {
-    //   return new Promise((resolve, reject) => {
-    //     commit('SET_CODE', code)
-    //     loginByThirdparty(state.status, state.email, state.code).then(response => {
-    //       commit('SET_TOKEN', response.data.token)
-    //       setToken(response.data.token)
-    //       resolve()
-    //     }).catch(error => {
-    //       reject(error)
-    //     })
-    //   })
-    // },
 
     // 登出
     LogOut({ commit, state }) {
@@ -118,22 +86,6 @@ const user = {
         commit('SET_TOKEN', '')
         removeToken()
         resolve()
-      })
-    },
-
-    // 动态修改权限
-    ChangeRoles({ commit }, role) {
-      return new Promise(resolve => {
-        commit('SET_TOKEN', role)
-        setToken(role)
-        getUserInfo(role).then(response => {
-          const data = response.data
-          commit('SET_ROLES', data.roles)
-          commit('SET_NAME', data.name)
-          commit('SET_AVATAR', data.avatar)
-          commit('SET_INTRODUCTION', data.introduction)
-          resolve()
-        })
       })
     }
   }
