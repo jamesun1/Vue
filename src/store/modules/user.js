@@ -1,4 +1,4 @@
-import { login, logout, getInfo } from '@/api/login'
+import { login, logout, getInfo ,insEnter} from '@/api/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { debug } from 'util';
 
@@ -74,6 +74,19 @@ const user = {
           commit('SET_ROLES', [])
           removeToken()
           resolve()
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    InsEnter({ commit, state },data) {
+      return new Promise((resolve, reject) => {
+        insEnter(data).then((response) => {
+          if(response.code === 0){
+            resolve()
+          }else{
+            reject(response.message)
+          }
         }).catch(error => {
           reject(error)
         })

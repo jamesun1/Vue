@@ -25,3 +25,11 @@ export function logout() {
     method: 'post'
   })
 }
+
+export function insEnter(data) {
+  return request({
+    url: '/user/insgister',
+    method: 'post',
+    data:data
+  })
+}
