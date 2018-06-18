@@ -54,12 +54,13 @@ const user = {
               dataFlag[0] = 'editor'
             }
             commit('SET_ROLES',dataFlag)
+            resolve(dataFlag)
           } else {
             reject('getInfo: roles must be a non-null array !')
           }
           commit('SET_NAME', data.user)
           commit('SET_AVATAR', data.avatar)
-          resolve(response)
+          resolve()
         }).catch(error => {
           reject(error)
         })

@@ -37,27 +37,7 @@ export const constantRouterMap = [
     }]
   },
 
-  {
-    path: '/example',
-    component: Layout,
-    redirect: '/example/table',
-    name: 'Example',
-    meta: { title: 'Example', icon: 'example' },
-    children: [
-      {
-        path: 'table',
-        name: 'Table',
-        component: () => import('@/views/table/index'),
-        meta: { title: 'Table', icon: 'table' }
-      },
-      {
-        path: 'tree',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
-        meta: { title: 'Tree', icon: 'tree' }
-      }
-    ]
-  },
+
 
   {
     path: '/form',
@@ -81,3 +61,26 @@ export default new Router({
   routes: constantRouterMap
 })
 
+export const asyncRouterMap = [
+  {
+    path: '/example',
+    component: Layout,
+    redirect: '/example/table',
+    name: 'Example',
+    meta: { title: 'Example', icon: 'example', roles: ['admin'] },
+    children: [
+      {
+        path: 'table',
+        name: 'Table',
+        component: () => import('@/views/table/index'),
+        meta: { title: 'Table', icon: 'table', roles: ['admin'] }
+      },
+      {
+        path: 'tree',
+        name: 'Tree',
+        component: () => import('@/views/tree/index'),
+        meta: { title: 'Tree', icon: 'tree', roles: ['admin'] }
+      }
+    ]
+  },
+]
