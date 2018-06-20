@@ -1,7 +1,12 @@
 <template>
   <div class="app-container">
     <el-button type="primary" @click="newbuild" plain>新建</el-button>
-    <el-table :data="tableData" style="width: 100%">
+    <el-table v-loading="tableLoading" @row-dblclick="openDetail" :data="tableData" style="width: 100%">
+      <el-table-column type="expand">
+        <template slot-scope="props">
+          <div>姓名:{{ props.row.name}}</div>
+        </template>
+      </el-table-column>
       <el-table-column prop="createon" :formatter="formatter" label="日期" width="180">
       </el-table-column>
       <el-table-column prop="name" label="姓名" width="180">
@@ -9,6 +14,8 @@
       <el-table-column prop="adress" label="地址">
       </el-table-column>
     </el-table>
+    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="[10, 20, 30, 40]" :page-size="pageSize" layout="total, sizes, prev, pager, next, jumper" :total="total">
+    </el-pagination>
     <el-dialog title="提示" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
       <el-row>
         <el-form>
@@ -44,7 +51,11 @@ export default {
       listLoading: true,
       tableData: [],
       dialogVisible: false,
-      formValidae: {}
+      formValidae: {},
+      currentPage: 1,
+      total: 0,
+      pageSize: 10,
+      tableLoading: false
     }
   },
   filters: {
@@ -62,6 +73,20 @@ export default {
     this.listLoading = false
   },
   methods: {
+    openDetail(row, event) {
+      this.formValidae = row;
+      this.dialogVisible = true;
+    },
+    handleSizeChange(val) {
+      this.tableLoading = true;
+      this.pageSize = val;
+      this.fetchData();
+    },
+    handleCurrentChange(val) {
+      this.tableLoading = true;
+      this.currentPage = val;
+      this.fetchData();
+    },
     formatter(row, column) {
       if (column.property === "createon") {
         return parseTime(row[column.property], "{y}-{m}-{d}");
@@ -69,14 +94,17 @@ export default {
     },
     handleClose() {
       this.dialogVisible = false;
+      this.formValidae = {};
     },
     // return parseTime(row[column.property], "{y}-{m}-{d}");
     fetchData() {
-      this.listLoading = true
+      this.tableLoading = true;
       this.$store
-        .dispatch("TableSelectAll")
+        .dispatch("TableSelectAll", { currentPage: this.currentPage, pageSize: this.pageSize })
         .then(response => {
-          this.tableData = response;
+          this.tableData = response.tableinfoList;
+          this.total = response.total;
+          this.tableLoading = false;
         })
         .catch(() => {
           console.log("no");
