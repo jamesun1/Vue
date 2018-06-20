@@ -1,4 +1,4 @@
-import { login, logout, getInfo ,insEnter} from '@/api/login'
+import { login, logout, getInfo, insEnter, tableSelectAll, tableInsert } from '@/api/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { debug } from 'util';
 
@@ -48,12 +48,12 @@ const user = {
           const data = response.data
           if (data.role) { // 验证返回的roles是否是一个非空数组
             let dataFlag = [];
-            if(data.role === '0'){
+            if (data.role === '0') {
               dataFlag[0] = 'admin'
-            }else if(data.role === '1'){
+            } else if (data.role === '1') {
               dataFlag[0] = 'editor'
             }
-            commit('SET_ROLES',dataFlag)
+            commit('SET_ROLES', dataFlag)
             resolve(dataFlag)
           } else {
             reject('getInfo: roles must be a non-null array !')
@@ -80,12 +80,12 @@ const user = {
         })
       })
     },
-    InsEnter({ commit, state },data) {
+    InsEnter({ commit, state }, data) {
       return new Promise((resolve, reject) => {
         insEnter(data).then((response) => {
-          if(response.code === 0){
+          if (response.code === 0) {
             resolve()
-          }else{
+          } else {
             reject(response.message)
           }
         }).catch(error => {
@@ -93,7 +93,6 @@ const user = {
         })
       })
     },
-
     // 前端 登出
     FedLogOut({ commit }) {
       return new Promise(resolve => {
@@ -101,7 +100,33 @@ const user = {
         removeToken()
         resolve()
       })
-    }
+    },
+    TableSelectAll({ commit, state }) {
+      return new Promise((resolve, reject) => {
+        tableSelectAll().then((response) => {
+          if (response.code === 0) {
+            resolve(response.data)
+          } else {
+            reject(response.message)
+          }
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    TableInsert({ commit, state }, data) {
+      return new Promise((resolve, reject) => {
+        tableInsert(data).then((response) => {
+          if (response.code === 0) {
+            resolve()
+          } else {
+            reject(response.message)
+          }
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
   }
 }
 

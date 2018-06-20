@@ -30,6 +30,21 @@ export function insEnter(data) {
   return request({
     url: '/user/insgister',
     method: 'post',
-    data:data
+    data: data
+  })
+}
+
+export function tableSelectAll() {
+  return request({
+    url: '/table/selectAll',
+    method: 'post',
+  })
+}
+
+export function tableInsert(data) {
+  return request({
+    url: '/table/insert',
+    method: 'post',
+    data: data
   })
 }

@@ -1,41 +1,50 @@
 <template>
   <div class="app-container">
+    <el-button type="primary" @click="newbuild" plain>新建</el-button>
     <el-table :data="tableData" style="width: 100%">
-      <el-table-column prop="date" label="日期" width="180">
+      <el-table-column prop="createon" :formatter="formatter" label="日期" width="180">
       </el-table-column>
       <el-table-column prop="name" label="姓名" width="180">
       </el-table-column>
-      <el-table-column prop="address" label="地址">
+      <el-table-column prop="adress" label="地址">
       </el-table-column>
     </el-table>
+    <el-dialog title="提示" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
+      <el-row>
+        <el-form>
+          <el-form-item label="名字" prop="name">
+            <el-input v-model="formValidae.name" placeholder="请输入名字"></el-input>
+          </el-form-item>
+          <el-form-item label="地址" prop="adress">
+            <el-input v-model="formValidae.adress" placeholder="请输入地址"></el-input>
+          </el-form-item>
+          <el-form-item label="日期" prop="createon">
+            <el-date-picker v-model="formValidae.createon" style="width:100%" type="date" placeholder="选择日期">
+            </el-date-picker>
+          </el-form-item>
+        </el-form>
+      </el-row>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="enterInsert">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import { getList } from '@/api/table'
+import { parseTime } from "@/utils";
+import { Message } from 'element-ui'
 
 export default {
   data() {
     return {
       list: null,
       listLoading: true,
-      tableData: [{
-        date: '2016-05-02',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-04',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1517 弄'
-      }, {
-        date: '2016-05-01',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1519 弄'
-      }, {
-        date: '2016-05-03',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1516 弄'
-      }]
+      tableData: [],
+      dialogVisible: false,
+      formValidae: {}
     }
   },
   filters: {
@@ -49,16 +58,44 @@ export default {
     }
   },
   created() {
-    // this.fetchData()
+    this.fetchData()
     this.listLoading = false
   },
   methods: {
+    formatter(row, column) {
+      if (column.property === "createon") {
+        return parseTime(row[column.property], "{y}-{m}-{d}");
+      }
+    },
+    handleClose() {
+      this.dialogVisible = false;
+    },
+    // return parseTime(row[column.property], "{y}-{m}-{d}");
     fetchData() {
       this.listLoading = true
-      getList(this.listQuery).then(response => {
-        this.list = response.data.items
-        this.listLoading = false
-      })
+      this.$store
+        .dispatch("TableSelectAll")
+        .then(response => {
+          this.tableData = response;
+        })
+        .catch(() => {
+          console.log("no");
+        });
+    },
+    newbuild() {
+      this.dialogVisible = true;
+    },
+    enterInsert() {
+      this.$store
+        .dispatch("TableInsert", this.formValidae)
+        .then(response => {
+          this.dialogVisible = false;
+          Message.success("新建成功")
+          this.fetchData();
+        })
+        .catch(() => {
+          console.log("no");
+        });
     }
   }
 }
