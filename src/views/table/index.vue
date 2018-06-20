@@ -9,6 +9,8 @@
       <el-table-column prop="adress" label="地址">
       </el-table-column>
     </el-table>
+    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="[10, 20, 30, 40]" :page-size="pageSize" layout="total, sizes, prev, pager, next, jumper" :total="total">
+    </el-pagination>
     <el-dialog title="提示" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
       <el-row>
         <el-form>
@@ -44,7 +46,10 @@ export default {
       listLoading: true,
       tableData: [],
       dialogVisible: false,
-      formValidae: {}
+      formValidae: {},
+      currentPage: 1,
+      total: 0,
+      pageSize: 10
     }
   },
   filters: {
@@ -62,6 +67,12 @@ export default {
     this.listLoading = false
   },
   methods: {
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`);
+    },
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+    },
     formatter(row, column) {
       if (column.property === "createon") {
         return parseTime(row[column.property], "{y}-{m}-{d}");
@@ -74,9 +85,10 @@ export default {
     fetchData() {
       this.listLoading = true
       this.$store
-        .dispatch("TableSelectAll")
+        .dispatch("TableSelectAll", { currentPage: this.currentPage, pageSize: this.pageSize })
         .then(response => {
-          this.tableData = response;
+          this.tableData = response.tableinfoList;
+          this.total = response.total;
         })
         .catch(() => {
           console.log("no");
