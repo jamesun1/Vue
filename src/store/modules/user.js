@@ -101,9 +101,9 @@ const user = {
         resolve()
       })
     },
-    TableSelectAll({ commit, state }) {
+    TableSelectAll({ commit, state }, data) {
       return new Promise((resolve, reject) => {
-        tableSelectAll().then((response) => {
+        tableSelectAll(data).then((response) => {
           if (response.code === 0) {
             resolve(response.data)
           } else {

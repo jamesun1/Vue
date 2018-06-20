@@ -34,10 +34,11 @@ export function insEnter(data) {
   })
 }
 
-export function tableSelectAll() {
+export function tableSelectAll(data) {
   return request({
     url: '/table/selectAll',
     method: 'post',
+    data: data
   })
 }
 
