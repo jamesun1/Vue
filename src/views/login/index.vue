@@ -1,52 +1,52 @@
 <template>
-  <div class="login-container">
-    <el-form class="login-form" autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left">
-      <h3 class="title">vue模板</h3>
-      <el-form-item prop="username">
-        <span class="svg-container svg-container_login">
-          <svg-icon icon-class="user" />
-        </span>
-        <el-input name="username" type="text" v-model="loginForm.username" autoComplete="on" placeholder="username" />
-      </el-form-item>
-      <el-form-item prop="password">
-        <span class="svg-container">
-          <svg-icon icon-class="password"></svg-icon>
-        </span>
-        <el-input name="password" :type="pwdType" @keyup.enter.native="handleLogin" v-model="loginForm.password" autoComplete="on" placeholder="password"></el-input>
-        <span class="show-pwd" @click="showPwd">
-          <svg-icon icon-class="eye" />
-        </span>
-      </el-form-item>
-      <el-form-item>
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-button type="primary" style="width:100%;" :loading="loading" @click.native.prevent="handleLogin">
-              登陆
-            </el-button>
-          </el-col>
-          <el-col :span="12">
-            <el-button type="primary" style="width:100%;" @click.native.prevent="zhuce">
-              注册
-            </el-button>
-          </el-col>
-        </el-row>
-      </el-form-item>
-    </el-form>
-    <el-dialog title="注册" :modal="false" :visible.sync="InsWatch" width="30%" :before-close="handleClose">
-      <span>注册用户信息</span>
-      <el-input type="text" v-model="formdata.user" placeholder="请输入用户名" />
-      <el-input type="text" v-model="formdata.password" placeholder="请输入密 码" />
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="InsWatch = false">取 消</el-button>
-        <el-button type="primary" @click="InsEnter">确 定</el-button>
-      </span>
-    </el-dialog>
-  </div>
+    <div class="login-container">
+        <el-form class="login-form" autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left">
+            <h3 class="title">vue模板</h3>
+            <el-form-item prop="username">
+                <span class="svg-container svg-container_login">
+                    <svg-icon icon-class="user" />
+                </span>
+                <el-input name="username" type="text" v-model="loginForm.username" autoComplete="on" placeholder="username" />
+            </el-form-item>
+            <el-form-item prop="password">
+                <span class="svg-container">
+                    <svg-icon icon-class="password"></svg-icon>
+                </span>
+                <el-input name="password" :type="pwdType" @keyup.enter.native="handleLogin" v-model="loginForm.password" autoComplete="on" placeholder="password"></el-input>
+                <span class="show-pwd" @click="showPwd">
+                    <svg-icon icon-class="eye" />
+                </span>
+            </el-form-item>
+            <el-form-item>
+                <el-row :gutter="20">
+                    <el-col :span="12">
+                        <el-button type="primary" style="width:100%;" :loading="loading" @click.native.prevent="handleLogin">
+                            登陆
+                        </el-button>
+                    </el-col>
+                    <el-col :span="12">
+                        <el-button type="primary" style="width:100%;" @click.native.prevent="zhuce">
+                            注册
+                        </el-button>
+                    </el-col>
+                </el-row>
+            </el-form-item>
+        </el-form>
+        <el-dialog title="注册" :modal="false" :visible.sync="InsWatch" width="30%" :append-to-body="true" :before-close="handleClose">
+            <span>注册用户信息</span>
+            <el-input type="text" v-model="formdata.user" placeholder="请输入用户名"></el-input>
+            <el-input type="text" v-model="formdata.password" placeholder="请输入密 码"></el-input>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="InsWatch = false">取 消</el-button>
+                <el-button type="primary" @click="InsEnter">确 定</el-button>
+            </span>
+        </el-dialog>
+    </div>
 </template>
 
 <script>
 import { isvalidUsername } from "@/utils/validate";
-import { Message} from 'element-ui'
+import { Message } from 'element-ui'
 
 export default {
     name: "login",
@@ -59,8 +59,8 @@ export default {
             }
         };
         const validatePass = (rule, value, callback) => {
-            if (value.length < 5) {
-                callback(new Error("密码不能小于5位"));
+            if (value.length < 3) {
+                callback(new Error("密码不能小于3位"));
             } else {
                 callback();
             }
@@ -89,16 +89,19 @@ export default {
         };
     },
     methods: {
+        handleClose() {
+            this.InsWatch = false;
+        },
         InsEnter() {
             this.$store
                 .dispatch("InsEnter", this.formdata)
                 .then(() => {
-                  Message.success("注册成功");
-                  this.formdata ={};
-                  this.InsWatch = false;
+                    Message.success("注册成功");
+                    this.formdata = {};
+                    this.InsWatch = false;
                 })
                 .catch((error) => {
-                  Message.error(error);
+                    Message.error(error);
                 });
         },
         zhuce() {
