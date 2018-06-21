@@ -1,7 +1,12 @@
 <template>
   <div class="app-container">
     <el-button type="primary" @click="newbuild" plain>新建</el-button>
-    <el-table :data="tableData" style="width: 100%">
+    <el-table v-loading="tableLoading" @row-dblclick="openDetail" :data="tableData" style="width: 100%">
+      <el-table-column type="expand">
+        <template slot-scope="props">
+          <div>姓名:{{ props.row.name}}</div>
+        </template>
+      </el-table-column>
       <el-table-column prop="createon" :formatter="formatter" label="日期" width="180">
       </el-table-column>
       <el-table-column prop="name" label="姓名" width="180">
@@ -38,6 +43,7 @@
 import { getList } from '@/api/table'
 import { parseTime } from "@/utils";
 import { Message } from 'element-ui'
+
 export default {
   data() {
     return {
@@ -48,7 +54,8 @@ export default {
       formValidae: {},
       currentPage: 1,
       total: 0,
-      pageSize: 10
+      pageSize: 10,
+      tableLoading: false
     }
   },
   filters: {
@@ -66,11 +73,19 @@ export default {
     this.listLoading = false
   },
   methods: {
+    openDetail(row, event) {
+      this.formValidae = row;
+      this.dialogVisible = true;
+    },
     handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
+      this.tableLoading = true;
+      this.pageSize = val;
+      this.fetchData();
     },
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+      this.tableLoading = true;
+      this.currentPage = val;
+      this.fetchData();
     },
     formatter(row, column) {
       if (column.property === "createon") {
@@ -79,15 +94,17 @@ export default {
     },
     handleClose() {
       this.dialogVisible = false;
+      this.formValidae = {};
     },
     // return parseTime(row[column.property], "{y}-{m}-{d}");
     fetchData() {
-      this.listLoading = true
+      this.tableLoading = true;
       this.$store
         .dispatch("TableSelectAll", { currentPage: this.currentPage, pageSize: this.pageSize })
         .then(response => {
           this.tableData = response.tableinfoList;
           this.total = response.total;
+          this.tableLoading = false;
         })
         .catch(() => {
           console.log("no");
