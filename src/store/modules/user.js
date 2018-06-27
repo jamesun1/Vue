@@ -1,4 +1,4 @@
-import { login, logout, getInfo, insEnter, tableSelectAll, tableInsert } from '@/api/login'
+import { login, logout, getInfo, insEnter, tableSelectAll, tableInsert, treeSelectAll, selectInfoByParentid, insertTreeInfo, deleteTreeInfo } from '@/api/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { debug } from 'util';
 
@@ -7,7 +7,8 @@ const user = {
     token: getToken(),
     name: '',
     avatar: '',
-    roles: []
+    roles: [],
+    treeList: []
   },
 
   mutations: {
@@ -22,6 +23,9 @@ const user = {
     },
     SET_ROLES: (state, roles) => {
       state.roles = roles
+    },
+    SET_TREELIST: (state, roles) => {
+      state.treeList = roles
     }
   },
 
@@ -121,6 +125,58 @@ const user = {
             resolve()
           } else {
             reject(response.message)
+          }
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    TreeSelectAll({ commit, state }, data) {
+      return new Promise((resolve, reject) => {
+        treeSelectAll(data).then((response) => {
+          if (response.code === 0) {
+            resolve(response.data);
+          } else {
+            reject(response.message);
+          }
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    SelectInfoByParentid({ commit, state }, data) {
+      return new Promise((resolve, reject) => {
+        selectInfoByParentid(data).then((response) => {
+          if (response.code === 0) {
+            resolve(response.data);
+          } else {
+            reject(response.message);
+          }
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    InsertTreeInfo({ commit, state }, data) {
+      return new Promise((resolve, reject) => {
+        insertTreeInfo(data).then((response) => {
+          if (response.code === 0) {
+            resolve(response.data);
+          } else {
+            reject(response.message);
+          }
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    DeleteTreeInfo({ commit, state }, data) {
+      return new Promise((resolve, reject) => {
+        deleteTreeInfo(data).then((response) => {
+          if (response.code === 0) {
+            resolve(response.data);
+          } else {
+            reject(response.message);
           }
         }).catch(error => {
           reject(error)

@@ -49,3 +49,34 @@ export function tableInsert(data) {
     data: data
   })
 }
+
+export function treeSelectAll(data) {
+  return request({
+    url: '/tree/selectTreeInfo',
+    method: 'get'
+  })
+}
+
+export function selectInfoByParentid(data) {
+  return request({
+    url: '/tree/selectInfoByParentid',
+    method: 'post',
+    data: data
+  })
+}
+
+export function insertTreeInfo(data) {
+  return request({
+    url: '/tree/insertTreeInfo',
+    method: 'post',
+    data: data
+  })
+}
+
+export function deleteTreeInfo(data) {
+  return request({
+    url: '/tree/deleteTreeInfo',
+    method: 'post',
+    data: data
+  })
+}
