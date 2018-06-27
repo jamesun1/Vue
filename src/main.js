@@ -17,7 +17,8 @@ import 'iview/dist/styles/iview.css';
 import '@/icons' // icon
 import '@/permission' // permission control
 
-Vue.use(ElementUI, iView, { locale1 })
+Vue.use(ElementUI, { locale1 })
+Vue.use(iView);
 
 Vue.config.productionTip = false
 
