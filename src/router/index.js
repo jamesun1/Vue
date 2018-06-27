@@ -29,7 +29,7 @@ export const constantRouterMap = [
     path: '/',
     component: Layout,
     redirect: '/dashboard',
-    name: 'Dashboard',
+    name: '仪表盘',
     hidden: true,
     children: [{
       path: 'dashboard',
@@ -47,7 +47,7 @@ export const constantRouterMap = [
         path: 'index',
         name: 'Form',
         component: () => import('@/views/form/index'),
-        meta: { title: 'Form', icon: 'form' }
+        meta: { title: '表单', icon: 'form' }
       }
     ]
   },
@@ -66,20 +66,26 @@ export const asyncRouterMap = [
     path: '/example',
     component: Layout,
     redirect: '/example/table',
-    name: 'Example',
-    meta: { title: 'Example', icon: 'example', roles: ['admin', 'editor'] },
+    name: '例如',
+    meta: { title: '例如', icon: 'example', roles: ['admin', 'editor'] },
     children: [
       {
         path: 'table',
-        name: 'Table',
+        name: '大表格',
         component: () => import('@/views/table/index'),
-        meta: { title: 'Table', icon: 'table', roles: ['admin', 'editor'] }
+        meta: { title: '大表格', icon: 'table', roles: ['admin', 'editor'] }
       },
       {
         path: 'tree',
-        name: 'Tree',
+        name: '树状图',
         component: () => import('@/views/tree/index'),
-        meta: { title: 'Tree', icon: 'tree', roles: ['admin', 'editor'] }
+        meta: { title: '树状图', icon: 'tree', roles: ['admin', 'editor'] }
+      },
+      {
+        path: 'Cascader',
+        name: '级联菜单',
+        component: () => import('@/views/Cascader/index'),
+        meta: { title: '级联菜单', icon: 'star', roles: ['admin', 'editor'] }
       }
     ]
   },

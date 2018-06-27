@@ -45,7 +45,6 @@
 </template>
 
 <script>
-import { isvalidUsername } from "@/utils/validate";
 import { Message } from 'element-ui'
 
 export default {

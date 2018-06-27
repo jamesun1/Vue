@@ -4,7 +4,6 @@ import 'normalize.css/normalize.css'// A modern alternative to CSS resets
 
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
-import locale from 'element-ui/lib/locale/lang/en' // lang i18n
 import locale1 from 'element-ui/lib/locale/lang/en'
 
 import '@/styles/index.scss' // global css
@@ -12,11 +11,13 @@ import '@/styles/index.scss' // global css
 import App from './App'
 import router from './router'
 import store from './store'
+import iView from 'iview';
+import 'iview/dist/styles/iview.css';
 
 import '@/icons' // icon
 import '@/permission' // permission control
 
-Vue.use(ElementUI, { locale1 })
+Vue.use(ElementUI, iView, { locale1 })
 
 Vue.config.productionTip = false
 

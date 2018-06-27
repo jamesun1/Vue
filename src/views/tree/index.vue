@@ -28,8 +28,6 @@
   </div>
 </template>
 <script>
-let id = 1000;
-
 export default {
   data() {
     return {
@@ -108,7 +106,6 @@ export default {
           this.getMessage();
         })
         .catch(() => {
-          console.log("no");
         });
     },
   }
