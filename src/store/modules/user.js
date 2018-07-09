@@ -1,4 +1,7 @@
-import { login, logout, getInfo, insEnter, tableSelectAll, tableInsert, treeSelectAll, selectInfoByParentid, insertTreeInfo, deleteTreeInfo } from '@/api/login'
+import {
+  login, logout, getInfo, insEnter, tableSelectAll, tableInsert, treeSelectAll, selectInfoByParentid, insertTreeInfo, deleteTreeInfo
+  , classificationSelectAll, classificationSelectById, classificationInsert, insertDictionary
+} from '@/api/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { debug } from 'util';
 
@@ -173,6 +176,58 @@ const user = {
     DeleteTreeInfo({ commit, state }, data) {
       return new Promise((resolve, reject) => {
         deleteTreeInfo(data).then((response) => {
+          if (response.code === 0) {
+            resolve(response.data);
+          } else {
+            reject(response.message);
+          }
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    ClassificationSelectAll({ commit, state }, data) {
+      return new Promise((resolve, reject) => {
+        classificationSelectAll(data).then((response) => {
+          if (response.code === 0) {
+            resolve(response.data);
+          } else {
+            reject(response.message);
+          }
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    ClassificationSelectById({ commit, state }, data) {
+      return new Promise((resolve, reject) => {
+        classificationSelectById(data).then((response) => {
+          if (response.code === 0) {
+            resolve(response.data);
+          } else {
+            reject(response.message);
+          }
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    ClassificationInsert({ commit, state }, data) {
+      return new Promise((resolve, reject) => {
+        classificationInsert(data).then((response) => {
+          if (response.code === 0) {
+            resolve(response.data);
+          } else {
+            reject(response.message);
+          }
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    InsertDictionary({ commit, state }, data) {
+      return new Promise((resolve, reject) => {
+        insertDictionary(data).then((response) => {
           if (response.code === 0) {
             resolve(response.data);
           } else {

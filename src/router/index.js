@@ -86,6 +86,12 @@ export const asyncRouterMap = [
         name: '级联菜单',
         component: () => import('@/views/Cascader/index'),
         meta: { title: '级联菜单', icon: 'star', roles: ['admin', 'editor'] }
+      },
+      {
+        path: 'dic',
+        name: '字典',
+        component: () => import('@/views/Dictionary/index'),
+        meta: { title: '字典', icon: 'star', roles: ['admin', 'editor'] }
       }
     ]
   },

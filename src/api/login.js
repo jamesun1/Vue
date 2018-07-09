@@ -80,3 +80,34 @@ export function deleteTreeInfo(data) {
     data: data
   })
 }
+
+export function classificationSelectAll(data) {
+  return request({
+    url: '/classification/selectAll',
+    method: 'post'
+  })
+}
+
+export function classificationSelectById(data) {
+  return request({
+    url: '/classification/selectById',
+    method: 'post',
+    data: data
+  })
+}
+
+export function classificationInsert(data) {
+  return request({
+    url: '/classification/insert',
+    method: 'post',
+    data: data
+  })
+}
+
+export function insertDictionary(data) {
+  return request({
+    url: '/classification/insertDictionary',
+    method: 'post',
+    data: data
+  })
+}
