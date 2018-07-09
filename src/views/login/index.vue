@@ -1,6 +1,6 @@
 <template>
     <div class="login-container">
-        <el-form class="login-form" autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left">
+        <el-form class="login-form" autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm">
             <h3 class="title">vue模板</h3>
             <el-form-item prop="username">
                 <span class="svg-container svg-container_login">
@@ -32,7 +32,7 @@
                 </el-row>
             </el-form-item>
         </el-form>
-        <el-dialog title="注册" :modal="false" :visible.sync="InsWatch" width="30%" :append-to-body="true" :before-close="handleClose">
+        <el-dialog title="注册" :modal="false" :visible.sync="InsWatch" width="60%" :append-to-body="true" :before-close="handleClose">
             <span>注册用户信息</span>
             <el-input type="text" v-model="formdata.user" placeholder="请输入用户名"></el-input>
             <el-input type="text" v-model="formdata.password" placeholder="请输入密 码"></el-input>
