@@ -111,3 +111,11 @@ export function insertDictionary(data) {
     data: data
   })
 }
+
+export function selectByCode(data) {
+  return request({
+    url: '/classification/selectByCode',
+    method: 'post',
+    data: data
+  })
+}

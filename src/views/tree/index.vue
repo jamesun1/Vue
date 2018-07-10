@@ -16,7 +16,7 @@
         </span>
       </span>
     </el-tree>
-    <el-dialog title="提示" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
+    <el-dialog title="提示" :visible.sync="dialogVisible" width="60%" :before-close="handleClose">
       <span>
         <el-input v-model="form.name" placeholder="请输入姓名"></el-input>
       </span>

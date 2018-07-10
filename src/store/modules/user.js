@@ -1,6 +1,6 @@
 import {
   login, logout, getInfo, insEnter, tableSelectAll, tableInsert, treeSelectAll, selectInfoByParentid, insertTreeInfo, deleteTreeInfo
-  , classificationSelectAll, classificationSelectById, classificationInsert, insertDictionary
+  , classificationSelectAll, classificationSelectById, classificationInsert, insertDictionary, selectByCode
 } from '@/api/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { debug } from 'util';
@@ -228,6 +228,19 @@ const user = {
     InsertDictionary({ commit, state }, data) {
       return new Promise((resolve, reject) => {
         insertDictionary(data).then((response) => {
+          if (response.code === 0) {
+            resolve(response.data);
+          } else {
+            reject(response.message);
+          }
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    SelectByCode({ commit, state }, data) {
+      return new Promise((resolve, reject) => {
+        selectByCode(data).then((response) => {
           if (response.code === 0) {
             resolve(response.data);
           } else {

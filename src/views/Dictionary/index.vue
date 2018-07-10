@@ -9,7 +9,8 @@
                     </div>
                     <div v-for="item in MessageList" :key="item.classificationid">
                         <div @click="enterClick(item)" style="font-size: 2em;margin-top: 1%;">
-                            {{item.name}}
+                            <span>CODE:{{item.code}}</span>
+                            <span style="float:right">名字：{{item.name}}</span>
                         </div>
                     </div>
                 </el-card>
