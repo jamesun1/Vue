@@ -92,6 +92,12 @@ export const asyncRouterMap = [
         name: '字典',
         component: () => import('@/views/Dictionary/index'),
         meta: { title: '字典', icon: 'star', roles: ['admin', 'editor'] }
+      },
+      {
+        path: 'Scroll',
+        name: '无线滚动',
+        component: () => import('@/views/Scroll/index'),
+        meta: { title: '无线滚动', icon: 'star', roles: ['admin', 'editor'] }
       }
     ]
   },
