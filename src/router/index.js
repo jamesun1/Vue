@@ -36,9 +36,6 @@ export const constantRouterMap = [
       component: () => import('@/views/dashboard/index')
     }]
   },
-
-
-
   {
     path: '/form',
     component: Layout,
@@ -51,17 +48,7 @@ export const constantRouterMap = [
       }
     ]
   },
-
-  { path: '*', redirect: '/404', hidden: true }
-]
-
-export default new Router({
-  // mode: 'history', //后端支持可开
-  scrollBehavior: () => ({ y: 0 }),
-  routes: constantRouterMap
-})
-
-export const asyncRouterMap = [
+  { path: '*', redirect: '/404', hidden: true },
   {
     path: '/example',
     component: Layout,
@@ -101,4 +88,14 @@ export const asyncRouterMap = [
       }
     ]
   },
+]
+
+export default new Router({
+  // mode: 'history', //后端支持可开
+  scrollBehavior: () => ({ y: 0 }),
+  routes: constantRouterMap
+})
+
+export const asyncRouterMap = [
+
 ]
