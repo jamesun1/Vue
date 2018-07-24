@@ -95,6 +95,12 @@ export const asyncRouterMap = [
         name: '无线滚动',
         component: () => import('@/views/Scroll/index'),
         meta: { title: '无线滚动', icon: 'star', roles: ['admin', 'editor'] }
+      },
+      {
+        path: 'Upload',
+        name: '压缩文件',
+        component: () => import('@/views/Upload/index'),
+        meta: { title: '压缩文件', icon: 'star', roles: ['admin', 'editor'] }
       }
     ]
   },
