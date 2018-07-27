@@ -112,7 +112,7 @@ export const asyncRouterMap = [
         path: 'H5Video',
         name: 'H5视频播放',
         component: () => import('@/views/H5Video/index'),
-        meta: { title: '视频播放', icon: 'star', roles: ['admin', 'editor'] }
+        meta: { title: 'H5视频播放', icon: 'star', roles: ['admin', 'editor'] }
       },
     ]
   },
