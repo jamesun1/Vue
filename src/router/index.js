@@ -101,7 +101,19 @@ export const asyncRouterMap = [
         name: '压缩文件',
         component: () => import('@/views/Upload/index'),
         meta: { title: '压缩文件', icon: 'star', roles: ['admin', 'editor'] }
-      }
+      },
+      {
+        path: 'Video',
+        name: '视频播放',
+        component: () => import('@/views/Video/index'),
+        meta: { title: '视频播放', icon: 'star', roles: ['admin', 'editor'] }
+      },
+      {
+        path: 'H5Video',
+        name: 'H5视频播放',
+        component: () => import('@/views/H5Video/index'),
+        meta: { title: '视频播放', icon: 'star', roles: ['admin', 'editor'] }
+      },
     ]
   },
 ]
