@@ -119,3 +119,28 @@ export function selectByCode(data) {
     data: data
   })
 }
+
+export function selectUserByTreeid(data) {
+  return request({
+    url: '/tree/selectUserByTreeid',
+    method: 'post',
+    params: {
+      treeid: data
+    }
+  })
+}
+
+export function insertUserByTreeid(data) {
+  return request({
+    url: '/tree/insertUserByTreeid',
+    method: 'post',
+    data: data
+  })
+}
+
+export function createImage(data) {
+  return request({
+    url: '/file/createImage',
+    method: 'post'
+  })
+}

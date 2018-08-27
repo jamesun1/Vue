@@ -1,6 +1,7 @@
 import {
   login, logout, getInfo, insEnter, tableSelectAll, tableInsert, treeSelectAll, selectInfoByParentid, insertTreeInfo, deleteTreeInfo
-  , classificationSelectAll, classificationSelectById, classificationInsert, insertDictionary, selectByCode
+  , classificationSelectAll, classificationSelectById, classificationInsert, insertDictionary, selectByCode, selectUserByTreeid, insertUserByTreeid
+  , createImage
 } from '@/api/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { debug } from 'util';
@@ -243,6 +244,45 @@ const user = {
         selectByCode(data).then((response) => {
           if (response.code === 0) {
             resolve(response.data);
+          } else {
+            reject(response.message);
+          }
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    SelectUserByTreeid({ commit, state }, data) {
+      return new Promise((resolve, reject) => {
+        selectUserByTreeid(data).then((response) => {
+          if (response.code === 0) {
+            resolve(response.data);
+          } else {
+            reject(response.message);
+          }
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    InsertUserByTreeid({ commit, state }, data) {
+      return new Promise((resolve, reject) => {
+        insertUserByTreeid(data).then((response) => {
+          if (response.code === 0) {
+            resolve(response.data);
+          } else {
+            reject(response.message);
+          }
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    createImage({ commit, state }, data) {
+      return new Promise((resolve, reject) => {
+        createImage(data).then((response) => {
+          if (response.code === 0) {
+            resolve(response.message);
           } else {
             reject(response.message);
           }

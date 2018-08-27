@@ -31,7 +31,6 @@ service.interceptors.response.use(
       var downloadElement = document.createElement('a');
       var href = window.URL.createObjectURL(blob); //创建下载的链接
       downloadElement.href = href;
-      debugger;
       var da = new Date();
       var year = da.getFullYear() + '年';
       var month = da.getMonth() + 1 + '月';

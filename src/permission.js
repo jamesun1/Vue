@@ -7,7 +7,9 @@ import { getToken } from '@/utils/auth' // 验权
 import { removeToken } from '@/utils/auth' // 验权
 
 const whiteList = ['/login'] // 不重定向白名单
+
 router.beforeEach((to, from, next) => {
+
   NProgress.start()
   if (getToken()) {
     if (to.path === '/login') {
@@ -23,8 +25,8 @@ router.beforeEach((to, from, next) => {
         store.dispatch('GetInfo').then(res => { // 拉取用户信息
           const roles = res // note: roles must be a array! such as: ['editor','develop']
           store.dispatch('GenerateRoutes', { roles }).then(() => { // 根据roles权限生成可访问的路由表
-            console.log(store.getters.addRouters)
-            router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
+            console.log(store.getters.addRouters);
+            router.addRoutes(store.getters.addRouters); // 动态添加可访问路由表
             next({ ...to, replace: true }) // hack方法 确保addRoutes已完成 ,set the replace: true so the navigation will not leave a history record
           })
         }).catch((err) => {

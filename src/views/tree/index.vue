@@ -1,22 +1,35 @@
 <template>
   <div v-loading="treeLoading">
-    <el-row>
-      <el-button type="primary" plain @click="buildMenu">新建一级菜单</el-button>
+
+    <el-row :gutter="20">
+      <el-col :span="6">
+        <el-row>
+          <el-button type="primary" plain @click="buildMenu">新建一级菜单</el-button>
+        </el-row>
+        <el-tree :props="defaultProps" show-checkbox @check-change="handleCheckChange" :default-expand-all="true" :expand-on-click-node="false" @node-click="treeClick" lazy :data="treedata" :load="loadNode" node-key="id">
+          <span class="custom-tree-node" slot-scope="{ node, data }">
+            <span>{{ node.label }}</span>
+            <span>
+              <el-button type="text" size="mini" icon="el-icon-plus" @click="() => append(data)">
+                添加
+              </el-button>
+              <el-button type="text" size="mini" icon="el-icon-delete" @click="() => remove(node, data)">
+                删除
+              </el-button>
+            </span>
+          </span>
+        </el-tree>
+      </el-col>
+      <el-col :span="18">
+        <el-row>
+          <el-button type="primary" :disabled="treeid===''" plain @click="userDataVisible = true">新建用户数据</el-button>
+        </el-row>
+        <Table :columns="columns1" :data="data1"></Table>
+        <Page :total="100" show-sizer show-total />
+      </el-col>
     </el-row>
-    <el-tree :props="defaultProps" :default-expand-all="true" :expand-on-click-node="false" lazy :data="treedata" :load="loadNode" node-key="id">
-      <span class="custom-tree-node" slot-scope="{ node, data }">
-        <span>{{ node.label }}</span>
-        <span>
-          <el-button type="text" size="mini" icon="el-icon-plus" @click="() => append(data)">
-            添加
-          </el-button>
-          <el-button type="text" size="mini" icon="el-icon-delete" @click="() => remove(node, data)">
-            删除
-          </el-button>
-        </span>
-      </span>
-    </el-tree>
-    <el-dialog title="提示" :visible.sync="dialogVisible" width="60%" :before-close="handleClose">
+
+    <el-dialog title="新建一级菜单" :visible.sync="dialogVisible" width="60%" :before-close="handleClose">
       <span>
         <el-input v-model="form.name" placeholder="请输入姓名"></el-input>
       </span>
@@ -25,9 +38,21 @@
         <el-button type="primary" @click="enterClick">确 定</el-button>
       </span>
     </el-dialog>
+
+    <el-dialog title="新建用户信息" :visible.sync="userDataVisible" width="60%" :before-close="handleClose">
+      <span>
+        <el-input v-model="form1.name" placeholder="请输入姓名"></el-input>
+        <el-input v-model="form1.adress" placeholder="请输入职位"></el-input>
+      </span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="userDataVisible = false">取 消</el-button>
+        <el-button type="primary" @click="createUserData">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
+import { Message } from 'element-ui';
 export default {
   data() {
     return {
@@ -38,14 +63,58 @@ export default {
       },
       dialogVisible: false,
       form: {},
+      form1: {},
       treedata: [],
-      treeLoading: false
+      treeLoading: false,
+      columns1: [
+        {
+          title: '姓名',
+          key: 'name'
+        },
+        {
+          title: '职位',
+          key: 'adress'
+        }
+      ],
+      data1: [],
+      treeid: "",
+      userDataVisible: false
     }
   },
   created() {
     this.getMessage();
   },
   methods: {
+    handleCheckChange(data, checked, indeterminate) {
+      console.log(data, checked, indeterminate);
+    },
+    createUserData() {
+      this.form1.treeid = this.treeid;
+      this.$store
+        .dispatch("InsertUserByTreeid", this.form1)
+        .then(response => {
+          Message.success("新建成功");
+          this.userDataVisible = false;
+          this.treeClick(this.treeid);
+          this.form1 = {};
+        })
+        .catch(() => {
+          console.log("no");
+        });
+    },
+    treeClick(data) {
+      if (data.treeid !== undefined) {
+        this.treeid = data.treeid;
+      }
+      this.$store
+        .dispatch("SelectUserByTreeid", this.treeid)
+        .then(response => {
+          this.data1 = response;
+        })
+        .catch(() => {
+          console.log("no");
+        });
+    },
     enterClick() {
       this.$store
         .dispatch("InsertTreeInfo", this.form)

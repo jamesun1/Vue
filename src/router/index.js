@@ -114,6 +114,12 @@ export const asyncRouterMap = [
         component: () => import('@/views/H5Video/index'),
         meta: { title: 'H5视频播放', icon: 'star', roles: ['admin', 'editor'] }
       },
+      {
+        path: 'imgScrect',
+        name: '图片验证码',
+        component: () => import('@/views/imgScrect/index'),
+        meta: { title: '图片验证码', icon: 'star', roles: ['admin', 'editor'] }
+      },
     ]
   },
 ]
