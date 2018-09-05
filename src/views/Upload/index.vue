@@ -8,6 +8,7 @@
             </div>
             <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
         </el-upload>
+        <el-button @click="downloadTest">测试下载文件</el-button>
         <el-dialog title="查看图片" :fullscreen="true" :append-to-body="true" :center="true" :visible.sync="dialogVisible" width="100%" :before-close="handleClose">
             <div style="text-align:center">
                 <img :src="imgSrc" />
@@ -44,6 +45,16 @@ export default {
         },
         downloadImg() {
             window.open(this.imgSrc);
+        },
+        downloadTest() {
+            this.$store
+                .dispatch("downloadTest")
+                .then(response => {
+                    Message.success("新建成功");
+                })
+                .catch(() => {
+                    console.log("no");
+                });
         }
     }
 }

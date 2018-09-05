@@ -1,6 +1,6 @@
 <template>
   <div v-loading="treeLoading">
-
+    <el-button @click="selectData">确认</el-button>
     <el-row :gutter="20">
       <el-col :span="6">
         <el-row>
@@ -78,14 +78,41 @@ export default {
       ],
       data1: [],
       treeid: "",
-      userDataVisible: false
+      userDataVisible: false,
+      permission: [],
     }
   },
   created() {
     this.getMessage();
   },
   methods: {
+    selectData() {
+      console.log("permission", this.permission);
+      this.$store
+        .dispatch("insertPermission", { treeList: this.permission })
+        .then(response => {
+          Message.success("新建成功");
+        })
+        .catch(() => {
+          console.log("no");
+        });
+    },
     handleCheckChange(data, checked, indeterminate) {
+      debugger;
+      if (checked) {
+        this.permission.push(data);
+      } else {
+        let treeid = data.treeid;
+        let date = this.permission;
+        for (let i = 0; i < date.length; i++) {
+          if (date[i].treeid === treeid) {
+            date.splice(i, 1);
+            break;
+          }
+        }
+        this.permission = date;
+      }
+
       console.log(data, checked, indeterminate);
     },
     createUserData() {

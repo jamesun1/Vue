@@ -1,7 +1,7 @@
 import {
   login, logout, getInfo, insEnter, tableSelectAll, tableInsert, treeSelectAll, selectInfoByParentid, insertTreeInfo, deleteTreeInfo
   , classificationSelectAll, classificationSelectById, classificationInsert, insertDictionary, selectByCode, selectUserByTreeid, insertUserByTreeid
-  , createImage
+  , createImage, insertPermission, downloadTest
 } from '@/api/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { debug } from 'util';
@@ -281,6 +281,32 @@ const user = {
     createImage({ commit, state }, data) {
       return new Promise((resolve, reject) => {
         createImage(data).then((response) => {
+          if (response.code === 0) {
+            resolve(response.message);
+          } else {
+            reject(response.message);
+          }
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    insertPermission({ commit, state }, data) {
+      return new Promise((resolve, reject) => {
+        insertPermission(data).then((response) => {
+          if (response.code === 0) {
+            resolve(response.message);
+          } else {
+            reject(response.message);
+          }
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    downloadTest({ commit, state }, data) {
+      return new Promise((resolve, reject) => {
+        downloadTest(data).then((response) => {
           if (response.code === 0) {
             resolve(response.message);
           } else {

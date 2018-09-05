@@ -1,4 +1,5 @@
 import request from '@/utils/request'
+import download from '@/utils/energydownload'
 
 export function login(user, password) {
   return request({
@@ -141,6 +142,21 @@ export function insertUserByTreeid(data) {
 export function createImage(data) {
   return request({
     url: '/file/createImage',
+    method: 'post'
+  })
+}
+
+export function insertPermission(data) {
+  return request({
+    url: '/tree/insertPermission',
+    method: 'post',
+    data: data
+  })
+}
+
+export function downloadTest(data) {
+  return download({
+    url: '/file/downloadTest',
     method: 'post'
   })
 }

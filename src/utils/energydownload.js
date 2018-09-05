@@ -5,7 +5,7 @@ import { getToken } from '@/utils/auth'
 
 // create an axios instance
 const service = axios.create({
-  baseURL: process.env.BASE_API, // api的base_url
+  baseURL: process.env.DEV_API, // api的base_url
   // timeout: 10000, // request timeout
   responseType: 'blob',
 })
@@ -27,7 +27,7 @@ service.interceptors.response.use(
   response => {
     if (response.status >= 200 && response.status < 300) {
       console.log(response.data)
-      var blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8' }); //application/vnd.openxmlformats-officedocument.spreadsheetml.sheet这里表示xlsx类型
+      var blob = new Blob([response.data], { type: 'image/jpeg;charset=utf-8' }); //application/vnd.openxmlformats-officedocument.spreadsheetml.sheet这里表示xlsx类型
       var downloadElement = document.createElement('a');
       var href = window.URL.createObjectURL(blob); //创建下载的链接
       downloadElement.href = href;
@@ -36,7 +36,7 @@ service.interceptors.response.use(
       var month = da.getMonth() + 1 + '月';
       var date = da.getDate() + '日';
       console.log('能源信息表_' + [year, month, date].join('-') + '.xls')
-      var simpledate = '能源表信息导出表_' + [year, month, date].join('-') + '.xls';
+      var simpledate = '能源表信息导出表_' + [year, month, date].join('-') + '.jpeg';
 
       downloadElement.download = simpledate; //下载后文件名
       document.body.appendChild(downloadElement);
