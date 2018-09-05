@@ -36,7 +36,7 @@ service.interceptors.response.use(
       var month = da.getMonth() + 1 + '月';
       var date = da.getDate() + '日';
       console.log('能源信息表_' + [year, month, date].join('-') + '.xls')
-      var simpledate = '能源表信息导出表_' + [year, month, date].join('-') + '.jpeg';
+      var simpledate = "测试图片" + '.jpeg';
 
       downloadElement.download = simpledate; //下载后文件名
       document.body.appendChild(downloadElement);
